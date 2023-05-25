@@ -11,8 +11,10 @@ import {
 import React, {useEffect, useState} from 'react';
 import Header from '../components/Header';
 import CommonBtn from '../components/CommonBtn';
+import {useNavigation} from '@react-navigation/native';
+
 let DaysList = [];
-const BookAppointment = ({navigation}) => {
+const BookAppointment = () => {
   const [selectedSlot, setSelectedSlot] = useState(-1);
   const [selectedGender, setSelectedGender] = useState(0);
   const [selectedDay, setSelectedDay] = useState(-1);
@@ -25,6 +27,7 @@ const BookAppointment = ({navigation}) => {
     {sloT: '08:00-11:00PM', selected: false},
   ]);
   const [days, setDays] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     DaysList = [];
@@ -63,124 +66,130 @@ const BookAppointment = ({navigation}) => {
     return days;
   };
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.container}>
-        <Header
-          icon={require('../images/back.png')}
-          title={'Book Appointment'}
-        />
-        <Image source={require('../images/doctor.png')} style={styles.docImg} />
-        <Text style={styles.name}>Doctor Jack</Text>
-        <Text style={styles.spcl}>Skin Doctor</Text>
-        <Text style={styles.heading}>Select Date</Text>
-        <View style={{marginTop: 20}}>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={days}
-            keyExtractor={({item, index}) => index}
-            renderItem={({item, index}) => {
-              return (
-                <TouchableOpacity
-                  style={{
-                    width: 60,
-                    height: 70,
-                    borderRadius: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: selectedDay == index ? 'blue' : 'white',
-                    borderWidth: selectedDay == index ? 0 : 1,
-                    marginLeft: 10,
-                  }}
-                  onPress={() => {
-                    if (item.day < new Date().getDate()) {
-                    } else {
-                      setSelectedDay(index);
-                    }
-                  }}>
-                  <Text style={{color: selectedDay == index ? '#fff' : 'blue'}}>
-                    {item.day}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
+    <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <View style={styles.container}>
+          <Header
+            icon={require('../images/back.png')}
+            title={'Book Appointment'}
           />
-        </View>
-        <Text style={styles.heading}>Available Slots</Text>
-        <View>
-          <FlatList
-            numColumns={2}
-            data={slots}
-            keyExtractor={({item, index}) => index}
-            renderItem={({item, index}) => {
-              return (
-                <TouchableOpacity
-                  style={[
-                    styles.timeSlot,
-                    {borderColor: index == selectedSlot ? 'blue' : 'black'},
-                  ]}
-                  onPress={() => {
-                    setSelectedSlot(index);
-                  }}>
-                  <Text
-                    style={{color: index == selectedSlot ? 'blue' : 'black'}}>
-                    {item.sloT}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
+          <Image
+            source={require('../images/doctor.png')}
+            style={styles.docImg}
           />
-        </View>
-        <Text style={styles.heading}>Patient Name</Text>
-        <TextInput style={styles.nameInput} placeholder={'Enter Name'} />
-        <Text style={styles.heading}>Select Gender</Text>
-        <View style={styles.genderView}>
-          <TouchableOpacity
-            style={[
-              styles.gender,
-              {
-                borderWidth: 0.5,
-                borderColor: selectedGender == 0 ? 'blue' : 'black',
-              },
-            ]}
-            onPress={() => {
-              setSelectedGender(0);
-            }}>
-            <Image
-              source={require('../images/male.png')}
-              style={{width: 24, height: 24}}
+          <Text style={styles.name}>Doctor Jack</Text>
+          <Text style={styles.spcl}>Skin Doctor</Text>
+          <Text style={styles.heading}>Select Date</Text>
+          <View style={{marginTop: 20}}>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={days}
+              keyExtractor={({item, index}) => index}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity
+                    style={{
+                      width: 60,
+                      height: 70,
+                      borderRadius: 20,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: selectedDay == index ? 'blue' : 'white',
+                      borderWidth: selectedDay == index ? 0 : 1,
+                      marginLeft: 10,
+                    }}
+                    onPress={() => {
+                      if (item.day < new Date().getDate()) {
+                      } else {
+                        setSelectedDay(index);
+                      }
+                    }}>
+                    <Text
+                      style={{color: selectedDay == index ? '#fff' : 'blue'}}>
+                      {item.day}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
             />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.gender,
-              {
-                borderWidth: 0.5,
-                borderColor: selectedGender == 1 ? 'blue' : 'black',
-              },
-            ]}
-            onPress={() => {
-              setSelectedGender(1);
-            }}>
-            <Image
-              source={require('../images/female.png')}
-              style={{width: 24, height: 24}}
+          </View>
+          <Text style={styles.heading}>Available Slots</Text>
+          <View>
+            <FlatList
+              numColumns={2}
+              data={slots}
+              keyExtractor={({item, index}) => index}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity
+                    style={[
+                      styles.timeSlot,
+                      {borderColor: index == selectedSlot ? 'blue' : 'black'},
+                    ]}
+                    onPress={() => {
+                      setSelectedSlot(index);
+                    }}>
+                    <Text
+                      style={{color: index == selectedSlot ? 'blue' : 'black'}}>
+                      {item.sloT}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
             />
-          </TouchableOpacity>
+          </View>
+          <Text style={styles.heading}>Patient Name</Text>
+          <TextInput style={styles.nameInput} placeholder={'Enter Name'} />
+          <Text style={styles.heading}>Select Gender</Text>
+          <View style={styles.genderView}>
+            <TouchableOpacity
+              style={[
+                styles.gender,
+                {
+                  borderWidth: 0.5,
+                  borderColor: selectedGender == 0 ? 'blue' : 'black',
+                },
+              ]}
+              onPress={() => {
+                setSelectedGender(0);
+              }}>
+              <Image
+                source={require('../images/male.png')}
+                style={{width: 24, height: 24}}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.gender,
+                {
+                  borderWidth: 0.5,
+                  borderColor: selectedGender == 1 ? 'blue' : 'black',
+                },
+              ]}
+              onPress={() => {
+                setSelectedGender(1);
+              }}>
+              <Image
+                source={require('../images/female.png')}
+                style={{width: 24, height: 24}}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.btnView}>
+            <CommonBtn
+              w={300}
+              h={45}
+              txt={'Book Now'}
+              status={true}
+              onClick={() => {
+                navigation.navigate('Success');
+              }}
+            />
+          </View>
         </View>
-        <View style={styles.btnView}>
-          <CommonBtn
-            w={300}
-            h={45}
-            txt={'Book Now'}
-            status={true}
-            onClick={() => {
-              navigation.navigate('Success');
-            }}
-          />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

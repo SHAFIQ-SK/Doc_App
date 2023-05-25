@@ -1,8 +1,8 @@
 import {
   View,
   Text,
-  Image,
   StyleSheet,
+  Image,
   FlatList,
   TouchableOpacity,
   ScrollView,
@@ -10,81 +10,117 @@ import {
 import React from 'react';
 import Header from '../components/Header';
 import LinearGradient from 'react-native-linear-gradient';
+import {useNavigation} from '@react-navigation/native';
 import CommonBtn from '../components/CommonBtn';
-const Home = ({navigation}) => {
+const Home = () => {
+  const navigation = useNavigation();
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.container}>
-        <Header
-          title={'Doctor App'}
-          icon={require('../images/phonendoscope.png')}
-        />
-        <Image source={require('../images/banner.jpg')} style={styles.banner} />
-        <Text style={styles.heading}>Select Category</Text>
-        <View style={{marginTop: 10, alignItems: 'center'}}>
-          <FlatList
-            data={[1, 1, 1, 1, 1, 1, 1]}
-            horizontal
-            renderItem={({item, index}) => {
-              return (
-                <TouchableOpacity>
-                  <LinearGradient
-                    colors={['#4c669f', '#3b5998', '#192f6a']}
-                    style={styles.linearGradient}>
-                    <Text style={styles.catname}>{'Category' + index}</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              );
-            }}
+    <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <View style={styles.container}>
+          <Header title={'DoctorApp'} icon={require('../images/logo.png')} />
+          <Image
+            source={require('../images/banner.jpg')}
+            style={styles.banner}
           />
+          <Text style={styles.heading}>Select Category</Text>
+          <View style={{marginTop: 20}}>
+            <FlatList
+              data={[1, 1, 1, 1, 1, 1, 1]}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity>
+                    <LinearGradient
+                      colors={['#009FFD', '#2A2A72']}
+                      style={styles.linearGradient}>
+                      <Text style={styles.catName}>
+                        {'Category ' + index + 1}
+                      </Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+          <Text style={styles.heading}>Top Rated Doctors</Text>
+          <View style={{marginTop: 20, alignItems: 'center'}}>
+            <FlatList
+              numColumns={2}
+              data={[1, 1, 1, 1, 1, 1]}
+              renderItem={({item, index}) => {
+                return (
+                  <View style={styles.docItem}>
+                    <Image
+                      source={require('../images/doctor.png')}
+                      style={styles.docImg}
+                    />
+                    <Text style={styles.docName}>Doctor {index + 1}</Text>
+                    <Text style={styles.docSpl}>Skin Specialist</Text>
+                    <Text
+                      style={[
+                        styles.status,
+                        {
+                          color: index / 2 == 0 ? 'green' : 'red',
+                          opacity: index / 2 == 0 ? 1 : 0.5,
+                        },
+                      ]}>
+                      {index / 2 == 0 ? 'Available' : 'Busy'}
+                    </Text>
+                    <CommonBtn
+                      w={150}
+                      h={40}
+                      status={index / 2 == 0 ? true : false}
+                      txt={'Book Appointment'}
+                      onClick={() => {
+                        if (index / 2 == 0) {
+                          navigation.navigate('BookAppointment');
+                        }
+                      }}
+                    />
+                  </View>
+                );
+              }}
+            />
+          </View>
         </View>
-        <Text style={styles.heading}>Top Rated Doctors</Text>
-        <View style={{marginTop: 10}}>
-          <FlatList
-            data={[1, 1, 1, 1, 1, 1, 1]}
-            numColumns={2}
-            renderItem={({item, index}) => {
-              return (
-                <View style={styles.docItem}>
-                  <Image
-                    source={require('../images/doctor.png')}
-                    style={styles.docImg}
-                  />
-                  <Text style={styles.docName}>Doctor {index}</Text>
-                  <Text style={styles.docspl}>Skin specialist</Text>
-                  <Text
-                    style={[
-                      styles.status,
-                      {
-                        color: index / 2 == 0 ? 'green' : 'red',
-                        opacity: index / 2 == 0 ? 1 : 0.5,
-                      },
-                    ]}>
-                    {index / 2 == 0 ? 'Available' : 'Busy'}
-                  </Text>
-                  <CommonBtn
-                    w={'100%'}
-                    h={40}
-                    status={index / 2 == 0 ? true : false}
-                    txt={'Book Appointment'}
-                    onclick={() => {
-                      if (index / 2 == 0) {
-                        navigation.navigate('BookAppointmt');
-                      }
-                    }}
-                  />
-                </View>
-              );
-            }}
+      </ScrollView>
+      <View style={styles.bottomView}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Completed');
+          }}>
+          <Image
+            source={require('../images/completed.png')}
+            style={styles.bottomIcon}
           />
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Pending');
+          }}>
+          <Image
+            source={require('../images/pending.png')}
+            style={styles.bottomIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('CallAmb');
+          }}>
+          <Image
+            source={require('../images/ambulance.png')}
+            style={styles.bottomIcon}
+          />
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 export default Home;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -95,7 +131,6 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 10,
     alignSelf: 'center',
-
     marginTop: 10,
   },
   heading: {
@@ -113,19 +148,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  catname: {
+  catName: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
   },
   docItem: {
     width: '45%',
+
     backgroundColor: '#fff',
     borderRadius: 10,
     borderWidth: 0.2,
-    marginLeft: 10,
-    marginTop: 20,
-    // alignSelf: 'center',
+    margin: 10,
   },
   docImg: {
     width: 60,
@@ -140,7 +174,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
   },
-  docspl: {
+  docSpl: {
     fontSize: 14,
     marginTop: 5,
     fontWeight: '600',
@@ -155,5 +189,22 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontWeight: '600',
     alignSelf: 'center',
+  },
+  bottomView: {
+    width: '90%',
+    height: 60,
+    borderRadius: 10,
+    elevation: 5,
+    position: 'absolute',
+    bottom: 20,
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  bottomIcon: {
+    width: 30,
+    height: 30,
   },
 });
