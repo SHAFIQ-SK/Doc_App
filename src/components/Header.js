@@ -1,10 +1,10 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 
-const Header = ({title, icon}) => {
+const Header = ({title, icon, onclickleft}) => {
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.backBtn}>
+      <TouchableOpacity style={styles.backBtn} onPress={onclickleft}>
         <Image source={icon} style={styles.back} />
       </TouchableOpacity>
 

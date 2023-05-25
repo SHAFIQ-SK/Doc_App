@@ -72,6 +72,7 @@ const BookAppointment = () => {
           <Header
             icon={require('../images/back.png')}
             title={'Book Appointment'}
+            onclickleft={() => navigation.navigate('Home')}
           />
           <Image
             source={require('../images/doctor.png')}
